@@ -24,7 +24,9 @@ function App() {
 
       if (!values.email) {
         errors.email = "Requerido";
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+      ) {
         errors.email = "Email no válido";
       }
 
@@ -35,37 +37,22 @@ function App() {
   return (
     <form onSubmit={formik.handleSubmit}>
       <label htmlFor="name">Nombre</label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.name}
-      />
-      {formik.touched.name && formik.errors.name ? <div>{formik.errors.name}</div> : null}
+      <input type="text" {...formik.getFieldProps("name")} />
+      {formik.touched.name && formik.errors.name ? (
+        <div>{formik.errors.name}</div>
+      ) : null}
       <br />
       <label htmlFor="lastname">Apellido</label>
-      <input
-        id="lastname"
-        name="lastname"
-        type="text"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.lastname}
-      />
-      {formik.touched.lastname && formik.errors.lastname ? <div>{formik.errors.lastname}</div> : null}
+      <input type="text" {...formik.getFieldProps("lastname")} />
+      {formik.touched.lastname && formik.errors.lastname ? (
+        <div>{formik.errors.lastname}</div>
+      ) : null}
       <br />
       <label htmlFor="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.email}
-      />
-      {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+      <input type="email" {...formik.getFieldProps("email")} />
+      {formik.touched.email && formik.errors.email ? (
+        <div>{formik.errors.email}</div>
+      ) : null}
       <br />
       <button type="submit">Enviar</button>
     </form>
