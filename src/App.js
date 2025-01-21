@@ -1,61 +1,62 @@
 import "./App.css";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import TextInput from "./components/TextInput";
+import Checkbox from "./components/Checkbox";
 
 function App() {
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      lastname: "",
-      email: "",
-    },
-    validate: (values) => {
-      const errors = {};
-      if (!values.name) {
-        errors.name = "Requerido";
-      } else if (values.name.length < 5) {
-        errors.name = "El nombre es muy corto";
-      }
+  // Define la función validate fuera de `return`
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = "Requerido";
+    } else if (values.name.length < 5) {
+      errors.name = "El nombre es muy corto";
+    }
 
-      if (!values.lastname) {
-        errors.lastname = "Requerido";
-      } else if (values.lastname.length < 5) {
-        errors.lastname = "El apellido es muy corto";
-      }
+    if (!values.lastname) {
+      errors.lastname = "Requerido";
+    } else if (values.lastname.length < 5) {
+      errors.lastname = "El apellido es muy corto";
+    }
 
-      if (!values.email) {
-        errors.email = "Requerido";
-      } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-      ) {
-        errors.email = "Email no válido";
-      }
+    if (!values.email) {
+      errors.email = "Requerido";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = "Email no válido";
+    }
 
-      return errors;
-    },
-    onSubmit: (values) => console.log(values),
-  });
+    return errors;
+  };
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="name">Nombre</label>
-      <input type="text" {...formik.getFieldProps("name")} />
-      {formik.touched.name && formik.errors.name ? (
-        <div>{formik.errors.name}</div>
-      ) : null}
-      <br />
-      <label htmlFor="lastname">Apellido</label>
-      <input type="text" {...formik.getFieldProps("lastname")} />
-      {formik.touched.lastname && formik.errors.lastname ? (
-        <div>{formik.errors.lastname}</div>
-      ) : null}
-      <br />
-      <label htmlFor="email">Email</label>
-      <input type="email" {...formik.getFieldProps("email")} />
-      {formik.touched.email && formik.errors.email ? (
-        <div>{formik.errors.email}</div>
-      ) : null}
-      <br />
-      <button type="submit">Enviar</button>
-    </form>
+    <Formik
+      initialValues={{
+        name: "",
+        lastname: "",
+        email: "",
+      }}
+      validate={validate}
+      onSubmit={(values) => console.log(values)}
+    >
+      <Form>
+        <TextInput name="name" label="Name" />
+        <Field name="name" type="text" className="input" />
+        <ErrorMessage name="name" />
+        <br />
+        <label htmlFor="lastname">Apellido</label>
+        <Field name="lastname" type="text" />
+        <ErrorMessage name="lastname" />
+        <br />
+        <label htmlFor="email">Email</label>
+        <Field name="email" type="email" />
+        <ErrorMessage name="email" />
+        <br />
+        <Checkbox name="accept">
+          Aceptar terminos y condiciones
+        </Checkbox>
+        <button type="submit">Enviar</button>
+      </Form>
+    </Formik>
   );
 }
 
